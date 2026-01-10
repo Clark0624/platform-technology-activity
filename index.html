@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Iteractive Portfolio Website</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root{
+            --main: #6366f1;
+            --secondary: #8b5cf6;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        
+        section{
+            padding: 80px 0;
+            position: relative;
+        }
+
+        /* navbar section */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, .08);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            padding: 8px 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, .12);
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--main), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(135deg, var(--main), var(--secondary));
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 80%;
+        }
+        
+        .nav-link.active {
+            color: var(--main)!important;
+            font-weight: 600;
+        }
+
+        /* hero section */
+        .hero{
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+            animation: backgroundMove 20s linear infinite;
+        }
+        
+        @keyframes backgroundMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .hero .lead {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero button {
+            border-radius: 50px;
+            padding: 15px 40px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hero button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-icons {
+            margin-top: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.6s backwards;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            margin: 0 10px;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            font-size: 1.2rem;
+        }
+
+        .social-icons a:hover {
+            background: white;
+            color: var(--main);
+            transform: translateY(-8px) rotate(360deg);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* for skill cards */
+        .card{
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .card:hover::before {
+            left: 100%;
+        }
+        
+        .card:hover{
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.2);
+        }
+        
+        .card i {
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover i {
+            transform: scale(1.2) rotate(5deg);
+            color: var(--main);
+        }
+
+        /* for project card */
+        .project-img{
+            height: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 3.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-img::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s ease;
+        }
+        
+        .card:hover .project-img::before {
+            width: 300%;
+            height: 300%;
+        }
+        
+        .card:hover .project-img i {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .project-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;   
+            border-radius: 0;   
+        }
+
+        /* for contacts */
+        #contact {
+            background: linear-gradient(to bottom, #f8fafc, #e2e8f0);
+        }
+
+        .contact-form {
+            background: white;
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control {
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 18px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--main);
+            box-shadow: 0 0 0 5px rgba(99, 102, 241, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+            font-size: 1.1rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+        }
+
+        .contact-info:hover {
+            transform: translateX(15px);
+            box-shadow: 0 10px 35px rgba(99, 102, 241, 0.15);
+            border-color: var(--main);
+        }
+
+        .contact-info i {
+            font-size: 2rem;
+            color: var(--main);
+            margin-right: 25px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-info:hover i {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        /*for section titles */
+        h2 {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--main), var(--secondary));
+            border-radius: 2px;
+        }
+
+        /* animations */
+        .fade{
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .fade.show{
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* footer */
+        footer{
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: #fff;
+            padding: 40px 0;
+        }
+        
+        footer .social-icons a {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        footer .social-icons a:hover {
+            background: var(--main);
+            color: white;
+        }
+
+        /* for progress bar */
+        .progress {
+            height: 8px;
+            border-radius: 10px;
+        }
+
+        .progress-bar {
+            border-radius: 10px;
+        }
+
+        /* scroll to top */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--main), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.4);
+            z-index: 1000;
+        }
+        
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5);
+        }
+        
+        .scroll-top.show {
+            display: flex;
+        }
+
+        /* responsiveee */
+        @media (max-width: 768px) {
+            section {
+                padding: 60px 0;
+            }
+            
+            .contact-form {
+                padding: 30px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+        /* dark mode */
+        body.dark-mode {
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        body.dark-mode .navbar {
+            background: rgba(30, 41, 59, 0.95);
+            box-shadow: 0 2px 20px rgba(255, 255, 255, 0.05);
+        }
+
+        body.dark-mode .hero {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: #f8fafc;
+        }
+
+        body.dark-mode .card,
+        body.dark-mode .contact-form,
+        body.dark-mode .contact-info {
+            background: #000000;
+            color: #f8fafc;
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
+        }
+
+        body.dark-mode .progress-bar {
+            background: var(--secondary);
+        }
+
+        body.dark-mode #contact {
+            background: #0f172a;
+        }
+
+        body.dark-mode footer {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #f8fafc;
+        }
+
+        body.dark-mode .btn-light {
+            background-color: #334155;
+            color: #f8fafc;
+        }
+
+        body.dark-mode .btn-primary {
+            background: var(--secondary);
+            border: none;
+        }
+
+        body.dark-mode .text-muted {
+            color: #cbd5e1 !important;
+        }
+  
+        body.dark-mode .navbar .nav-link {
+            color: #f8fafc !important;
+        }
+
+        body.dark-mode .navbar .nav-link.active {
+            color: var(--main) !important; 
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#home">CAB.</a>
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="nav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+                <button id="darkModeToggle" class="btn btn-sm btn-light ms-3">🌙</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- hero -->
+    <section id="home" class="hero text-center">
+    <div class="container hero-content">
+        <h1 class="fw-bold">Hi, I'm Clark Adrian C. Billedo</h1>
+        <p class="lead">Bachelor of Science in Information Technology Student</p>
+
+        <div class="d-flex justify-content-center gap-3 mb-4">
+            <button class="btn btn-light px-4" onclick="greet()">Let's Connect</button>
+            <button class="btn btn-light "
+                onclick="document.getElementById('projects').scrollIntoView({ behavior: 'smooth' })">
+                View Work
+            </button>
+        </div>
+
+        <div class="social-icons">
+            <a href="#" aria-label="GitHub"><i class="bi bi-github"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+            <a href="#" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+        </div>
+    </div>
+</section>
+
+
+    <!-- about -->
+    <section id="about">
+        <div class="container">
+            <h2 class="fw-bold mb-5 fade">About Me</h2>
+            <p class="text-muted col-md-20 mb-8 fade">I am a Bachelor of Science in Information Technology student who is passionate about web development and modern digital solutions. 
+            I create responsive and interactive websites using HTML, CSS, JavaScript, and Bootstrap, with a focus on clean design and user-friendly interfaces.
+            As a student, I actively enhance my skills through continuous practice, academic projects, and hands-on learning experiences.
+            I am eager to explore new technologies, improve my problem-solving abilities, and apply my knowledge to real-world applications while preparing for a future career in the IT industry.
+            </p>
+            <div class="row mt-4 g-4">
+                <div class="col-md-4 fade">
+                    <div class="card p-4 text-center">
+                        <i class="bi bi-code-slash fs-1 text-primary"></i>
+                        <h5 class="mt-3">HTML and CSS</h5>
+                        <h6 class="text-muted">Web Structure and </h6>
+                        <span class="fw-bold text-primary">90%</span>
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-primary" style="width: 90%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 fade">
+                    <div class="card p-4 text-center">
+                        <i class="bi bi-lightning fs-1 text-primary"></i>
+                        <h5 class="mt-3">JavaScript</h5>
+                        <h6 class="text-muted">Interactivity</h6>
+                        <span class="fw-bold text-primary">60%</span>
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-primary" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 fade">
+                    <div class="card p-4 text-center">
+                        <i class="bi bi-bootstrap fs-1 text-primary"></i>
+                        <h5 class="mt-3">Bootstrap</h5>
+                        <h6 class="text-muted">Responsive Design</h6>
+                        <span class="fw-bold text-primary">85%</span>
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-primary" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 fade">
+                    <div class="card p-4 text-center">
+                        <i class="bi bi-cup-hot fs-1 text-primary"></i>
+                        <h5 class="mt-3">Java</h5>
+                        <h6 class="text-muted">OOP Concepts</h6>
+                        <span class="fw-bold text-primary">50%</span>
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-primary" style="width: 65%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 fade">
+                    <div class="card p-4 text-center">
+                        <i class="bi bi-cpu fs-1 text-primary"></i>
+                        <h5 class="mt-3">C++</h5>
+                        <h6 class="text-muted">Programming Basics</h6>
+                        <span class="fw-bold text-primary">65%</span>
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-primary" style="width: 60%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 fade">
+                    <div class="card p-4 text-center">
+                        <i class="fa-brands fa-react fs-1 text-primary"></i>
+                        <h5 class="mt-3">React JS</h5>
+                        <h6 class="text-muted">Frontend Library</h6>
+                        <span class="fw-bold text-primary">50%</span>
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-primary" style="width: 50%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- projectt -->
+    <section id="projects">
+        <div class="container">
+            <h2 class="fw-bold mb-5 fade">Projects</h2>
+            <div class="row g-4">
+                <div class="col-md-4 fade">
+                    <div class="card">
+                        <img src="images/virtual venue.png" alt="Interactive App">
+                        <div class="card-body">
+                            <h5 class="fw-bold">Virtual Venue Website</h5>
+                            <p class="text-muted">HTML, CSS and JS Functions & Events</p>
+                            <button class="btn btn-sm btn-primary" onclick="showProject('Interactive App')">View Project</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 fade">
+                    <div class="card">
+                        <img src="images/portal quests.png" alt="Interactive App">
+                        <div class="card-body">
+                            <h5 class="fw-bold">Portal Quests Game</h5>
+                            <p class="text-muted">Bootstrap Grid</p>
+                            <button class="btn btn-sm btn-primary" onclick="showProject('Portfolio')">View Project</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 fade">
+                    <div class="card">
+                        <img src="images/Splash Resort.webp" alt="Interactive App">
+                        <div class="card-body">
+                            <h5 class="fw-bold">Splash Resort</h5>
+                            <p class="text-muted">Bootstrap Responsive Site</p>
+                            <button class="btn btn-sm btn-primary" onclick="showProject('Creative Design')">View Project</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- contact -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="fw-bold mb-3 fade">Get In Touch</h2>
+            <h5 class="text-muted mt-3 mb-5 fade">Have a project in mind? Let's work together!</h5>
+            
+            <div class="row">
+                <div class="col-lg-5 mb-4">
+                    <div class="contact-info fade">
+                        <i class="bi bi-envelope"></i>
+                        <div>
+                            <h6 class="fw-bold mb-1">Email</h6>
+                            <b><p class="text-muted mb-0 small">qcacbilledo01@tip.edu.ph<br>clarkbilledo024@gmail.com</p></b>
+                        </div>
+                    </div>
+                    <div class="contact-info fade">
+                        <i class="bi bi-geo-alt"></i>
+                        <div>
+                            <h6 class="fw-bold mb-1">Location</h6>
+                            <b><p class="text-muted mb-0">Antipolo City, Rizal, Philippines</p></b>
+                        </div>
+                    </div>
+                    <div class="contact-info fade">
+                        <i class="bi bi-phone"></i>
+                        <div>
+                            <h6 class="fw-bold mb-1">Phone</h6>
+                            <b><p class="text-muted mb-0">+63 994 718 3600<br>+63 945 542 4640</p></b>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7 fade">
+                    <form id="contactForm" class="contact-form">
+                        <div class="mb-4">
+                            <input type="text" class="form-control" placeholder="Your Name" required>
+                        </div>
+                        <div class="mb-4">
+                            <input type="email" class="form-control" placeholder="Your Email" required>
+                        </div>
+                        <div class="mb-4">
+                            <textarea class="form-control" placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-submit">
+                            <i class="bi bi-send me-2"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- footerrrrrrr -->
+    <footer class="text-center">
+        <div class="container">
+            <div class="social-icons mb-3">
+                <a href="#"><i class="bi bi-github"></i></a>
+                <a href="#"><i class="bi bi-linkedin"></i></a>
+                <a href="#"><i class="bi bi-twitter"></i></a>
+                <a href="#"><i class="bi bi-instagram"></i></a>
+            </div>
+            <p class="mb-1" style="opacity: 0.8;">© 2026 Clark Adrian C. Billedo. Thank you!</p>
+            <p class="mb-0" style="opacity: 0.6;">All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" onclick="scrollToTop()">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // for message of each
+        function greet(){
+            alert("Thank you for visiting my portfolio! God Bless!!");
+        }
+
+        function showProject(name){
+            alert(name + " details coming soon!");
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const contactForm = document.querySelector(".contact-form");
+
+            contactForm.addEventListener("submit", function(e){
+                e.preventDefault();
+                alert("Message sent successfully!!!");
+                contactForm.reset();
+            });
+        });
+
+        // for fading
+        const faders = document.querySelectorAll('.fade');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if(e.isIntersecting) e.target.classList.add('show');
+            });
+        }, {threshold: 0.1});
+        faders.forEach(f => observer.observe(f));
+
+        // for active nav barrrrrrrr
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const navbar = document.querySelector('.navbar');
+        const scrollTopBtn = document.querySelector('.scroll-top');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+           
+            if(window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            
+            if(window.scrollY > 300) {
+                scrollTopBtn.classList.add('show');
+            } else {
+                scrollTopBtn.classList.remove('show');
+            }
+            
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+    
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // smooth scroll 
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // for darkmode
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+
+            if(document.body.classList.contains('dark-mode')){
+                darkModeToggle.textContent = '☀️';
+            } else {
+                darkModeToggle.textContent = '🌙';
+            }
+
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        });
+
+        if(localStorage.getItem('darkMode') === 'true'){
+            document.body.classList.add('dark-mode');
+            darkModeToggle.textContent = '☀️';
+        }
+
+    </script>
+</body>
+</html>
